@@ -1,0 +1,10 @@
+export { default as FAQView } from './FAQView';
+export { default as WaysToWatchView } from './WaysToWatchView';
+export { default as PrivacyPolicyView } from './PrivacyPolicyView';
+export { default as CorporateInfoView } from './CorporateInfoView';
+export { default as CookieSettingsView } from './CookieSettingsView';
+export { default as LegalNoticesView } from './LegalNoticesView';
+export { default as SpeedTestView } from './SpeedTestView';
+export { default as OnlyOnNovaView } from './OnlyOnNovaView';
+export { default as MediaCenterView } from './MediaCenterView';
+export { default as TermsOfUseView } from './TermsOfUseView';

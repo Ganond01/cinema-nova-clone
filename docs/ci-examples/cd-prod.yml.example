@@ -1,0 +1,23 @@
+# REFERENCE ONLY: not an active GitHub Actions workflow.
+# Configure your own hosts, runner and registry before use.
+name: CD Prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Deploy main images to Prod
+        run: |
+          ssh -p 22 -o StrictHostKeyChecking=yes -i ~/.ssh/id_ed25519 deploy@example.invalid '
+            set -e
+            cd /opt/cinema-nova
+            docker pull ghcr.io/YOUR_ACCOUNT/cinema-frontend:main
+            docker pull ghcr.io/YOUR_ACCOUNT/cinema-backend:main
+            docker tag ghcr.io/YOUR_ACCOUNT/cinema-frontend:main ghcr.io/YOUR_ACCOUNT/cinema-frontend:dev
+            docker tag ghcr.io/YOUR_ACCOUNT/cinema-backend:main ghcr.io/YOUR_ACCOUNT/cinema-backend:dev
+            docker compose up -d --force-recreate --no-deps frontend backend nginx
+            docker compose ps
+          '

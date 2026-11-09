@@ -1,0 +1,240 @@
+// Cinema Nova - Prisma Schema
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                String         @id @default(uuid())
+  name              String
+  email             String         @unique
+  avatarUrl         String?
+  plan              String         @default("Standard")
+  favoriteGenres    String[]       @default([])
+  role              String         @default("user")
+  password          String?
+  handle            String?        @unique
+  birthDate         String?
+  gender            String?
+  location          String?
+  aboutMe           String?
+  googleConnected   Boolean        @default(false)
+  facebookConnected Boolean        @default(false)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  favorites         Favorite[]
+  watchHistory      WatchHistory[]
+  reviews           Review[]
+  customLists       CustomList[]
+
+  @@map("users")
+}
+
+model MediaItem {
+  id                  String         @id // e.g. "deadpool-wolverine-2024"
+  title               String
+  originalTitle       String?
+  titleEn             String?
+  type                String         // "movie" | "series" | "anime" | "dorama"
+  year                Int
+  duration            String
+  rating              Float          @default(0)
+  ratingVotesCount    String         @default("0")
+  ageRating           String         @default("16+")
+  description         String
+  descriptionEn       String?
+  posterUrl           String
+  backdropUrl         String
+  stills              String[]       @default([])
+  genres              String[]       @default([])
+  director            String?
+  cast                Json?          // Array<{ name: string, role: string, avatarUrl: string }>
+  languages           String[]       @default([])
+  subtitles           String[]       @default([])
+  budget              String?
+  revenue             String?
+  releaseDate         String?
+  videoUrl            String
+  trailerUrl          String?
+  trailerEmbedUrl     String?
+  trailerEmbedUrlUa   String?
+  trailerEmbedUrlEn   String?
+  isPopular           Boolean        @default(false)
+  isNew               Boolean        @default(false)
+  isTrending          Boolean        @default(false)
+  quality             String?        @default("4K")
+  viewsCount          Int            @default(0)
+  myAnimeListUrl      String?
+  whisperSubtitles    Json?
+  subtitleUrl         String?
+  qualities           Json?
+  videoSources        Json?
+  conversionStatus    String?        @default("idle")
+  conversionProgress  Int?           @default(0)
+  transcriptionStatus String?        @default("idle")
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  seasons             Season[]
+  reviews             Review[]
+  favorites           Favorite[]
+  watchHistory        WatchHistory[]
+
+  @@map("media_items")
+}
+
+model Season {
+  id           String      @id @default(uuid())
+  mediaItemId  String
+  mediaItem    MediaItem   @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
+  seasonNumber Int
+  title        String?
+
+  episodes     Episode[]
+
+  @@unique([mediaItemId, seasonNumber])
+  @@map("seasons")
+}
+
+model Episode {
+  id               String   @id @default(uuid())
+  seasonId         String
+  season           Season   @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  number           Int
+  title            String
+  duration         String?
+  videoUrl         String?
+  description      String?
+  thumbnailUrl     String?
+  qualities        Json?
+  videoSources     Json?
+  subtitleUrl      String?
+  whisperSubtitles Json?
+
+  @@map("episodes")
+}
+
+model Favorite {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mediaItemId String
+  mediaItem   MediaItem @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, mediaItemId])
+  @@map("favorites")
+}
+
+model WatchHistory {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mediaItemId     String
+  mediaItem       MediaItem @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
+  movieTitle      String?
+  progressPercent Float     @default(0)
+  watchedMinutes  Int?      @default(0)
+  totalMinutes    Int?      @default(0)
+  currentEpisode  String?
+  watchedAt       DateTime  @default(now())
+
+  @@unique([userId, mediaItemId])
+  @@map("watch_history")
+}
+
+model Review {
+  id          String     @id @default(uuid())
+  mediaItemId String
+  mediaItem   MediaItem  @relation(fields: [mediaItemId], references: [id], onDelete: Cascade)
+  userId      String?
+  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  username    String
+  userAvatar  String
+  rating      Float
+  comment     String
+  likes       Int        @default(0)
+  createdAt   DateTime   @default(now())
+
+  @@map("reviews")
+}
+
+model WatchPartyRoom {
+  id                String        @id
+  roomName          String
+  movieId           String
+  movieTitle        String
+  participantsCount Int           @default(1)
+  isPlaying         Boolean       @default(false)
+  currentTime       Float         @default(0)
+  duration          Float         @default(0)
+  code              String?       @unique
+  hostId            String?
+  hostName          String?
+  chatEnabled       Boolean       @default(true)
+  everyoneControls  Boolean       @default(true)
+  autoplayEnabled   Boolean       @default(false)
+  isPrivate         Boolean       @default(false)
+  maxParticipants   String?       @default("10")
+  createdAt         DateTime      @default(now())
+
+  messages          ChatMessage[]
+
+  @@map("watch_party_rooms")
+}
+
+model ChatMessage {
+  id          String         @id @default(uuid())
+  roomId      String
+  room        WatchPartyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  senderName  String
+  senderAvatar String
+  text        String
+  timestamp   String
+  isSystem    Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+
+  @@map("chat_messages")
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  recipientId String?
+  senderId    String?
+  senderName  String?
+  senderAvatar String?
+  senderEmail String?
+  type        String
+  title       String
+  titleEn     String?
+  desc        String
+  descEn      String?
+  unread      Boolean  @default(true)
+  time        String
+  timeEn      String?
+  status      String?  @default("pending")
+  posterUrl   String?
+  iconType    String?
+  data        Json?
+  createdAt   DateTime @default(now())
+
+  @@map("notifications")
+}
+
+model CustomList {
+  id          String   @id @default(uuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String   @default("")
+  isPublic    Boolean  @default(true)
+  movieIds    String[] @default([])
+  createdAt   DateTime @default(now())
+
+  @@map("custom_lists")
+}

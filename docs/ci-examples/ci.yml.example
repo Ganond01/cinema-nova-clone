@@ -1,0 +1,55 @@
+# REFERENCE ONLY: not an active GitHub Actions workflow.
+# Configure your own hosts, runner and registry before use.
+name: Cinema Nova CI
+
+on:
+  push:
+    branches: [ "dev" ]
+    paths-ignore:
+      - ".github/workflows/**"
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  infrastructure-check:
+    name: Infrastructure & Docker Check
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show runner info
+        run: |
+          echo "===== Runner Info ====="
+          hostname
+          whoami
+          uname -a
+          echo "======================="
+
+      - name: Check Docker
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Validate docker-compose.yml
+        run: |
+          if [ -f docker-compose.yml ]; then
+            echo "Checking docker-compose.yml..."
+            docker compose -f docker-compose.yml config
+            echo "docker-compose.yml is valid"
+          else
+            echo "docker-compose.yml not found"
+            exit 1
+          fi
+
+      - name: Check project structure
+        run: |
+          echo "=== Project structure ==="
+          ls -la
+          echo ""
+          echo "=== Source files ==="
+          ls -la src || echo "src not found"
+          echo ""
+          echo "=== Server ==="
+          ls -la server.ts server || echo "server not found"

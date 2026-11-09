@@ -1,0 +1,1122 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Montserrat Alternates", sans-serif;
+  --font-mono: "Inter", sans-serif;
+  --color-brand-red: #FF3040;
+  --color-brand-hover: #FF4D5C;
+  --color-brand-black: #080808;
+  --color-brand-surface: #121212;
+  --color-brand-card: #1A1A1A;
+  --color-brand-border: #2A2A2A;
+  --color-brand-text: #FAFAFA;
+  --color-brand-muted: #A3A3A3;
+  --color-accent-glow: #FF3040;
+}
+
+/* Tab switch fade-in animation */
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-tab-fade {
+  animation: tabFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Glass Card for Movie Cards */
+@keyframes cardFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Premium Auth Modal Entrance Animations */
+@keyframes authContainerEntrance {
+  0% {
+    opacity: 0;
+    transform: translateX(40px) scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes authLeftPostersEntrance {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px) scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-auth-slide-in {
+  animation: authContainerEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-auth-left-slide-in {
+  animation: authLeftPostersEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hero Banner Smooth Content Fade */
+@keyframes heroFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-fade {
+  animation: heroFadeSlide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.glass-card {
+  background: linear-gradient(to bottom, rgba(26, 26, 26, 0.4) 0%, rgba(10, 10, 10, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  animation: cardFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
+  will-change: transform, opacity;
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 48, 64, 0.65);
+  box-shadow: 0 14px 40px rgba(255, 48, 64, 0.3);
+  transform: translateY(-8px) scale(1.03);
+}
+
+/* Custom cinematic effects */
+.cinematic-glow {
+  box-shadow: 0 0 20px rgba(255, 48, 64, 0.45);
+}
+
+.text-shadow-neon {
+  text-shadow: 0 0 12px rgba(255, 48, 64, 0.65);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2A2A2A;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3A3A3A;
+}
+
+/* Navigation & Header Dispersion Mask (No harsh 1px borders) */
+.nav-mask-dispersion {
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.header-dispersion {
+  border: none !important;
+  border-bottom: none !important;
+  mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+}
+
+/* Fixed Cinema Header with progressive dual-layer blur and soft dispersion underlay */
+.cinema-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(18, 18, 18, 0.95) 0%, rgba(18, 18, 18, 0.8) 65%, transparent 100%);
+  border: none !important;
+  border-bottom: none !important;
+  isolation: isolate;
+}
+
+.cinema-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0.65) 75%, transparent 100%);
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.cinema-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  filter: blur(50px);
+  -webkit-filter: blur(50px);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (max-width: 767px) {
+  .cinema-header {
+    background: #000000 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: none !important;
+  }
+  .cinema-header::before,
+  .cinema-header::after {
+    display: none !important;
+  }
+}
+
+.sidebar-dispersion {
+  border: none !important;
+  border-right: none !important;
+  mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+}
+
+/* Cinema Footer with progressive dual-layer blur and soft top dispersion */
+.cinema-footer {
+  position: relative;
+  width: 100%;
+  isolation: isolate;
+  background: linear-gradient(to bottom, transparent 0%, rgba(18, 18, 18, 0.8) 12%, rgba(18, 18, 18, 0.95) 30%, #121212 100%);
+  border: none !important;
+  border-top: none !important;
+}
+
+.cinema-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(18, 18, 18, 0.65) 15%, rgba(18, 18, 18, 0.9) 35%, #121212 100%);
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 100%);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.cinema-footer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  filter: blur(50px);
+  -webkit-filter: blur(50px);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, transparent 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Custom animations and styling rules */
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+.gpu-layer {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Image hardware acceleration */
+img {
+  content-visibility: auto;
+}
+
+/* Dual Gradient Border & Neon Glow Button (1:1 with design) */
+.cinema-glow-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #18181D 0%, #101013 100%);
+  color: #ffffff;
+  border-radius: 10px;
+  /* 10px rounded rectangle matching Figma tokens */
+  cursor: pointer;
+  user-select: none;
+  isolation: isolate;
+  transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+}
+
+/* Dual-Tone Border (White on Top-Left, Red on Bottom-Right) with smooth border blur on hover */
+.cinema-glow-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(115deg, #FFFFFF 0%, #FFFFFF 38%, #FF3040 68%, #D41424 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+/* On hover: The border itself blurs softly with tight crisp glow matching image.png (NO wide ambient sphere) */
+.cinema-glow-btn:hover::after {
+  filter: drop-shadow(0 0 2.5px rgba(255, 255, 255, 0.75)) drop-shadow(0 0 5.5px rgba(255, 48, 64, 0.85));
+}
+
+/* Active / Pressed State: Deep Red Wine Gradient Fill */
+.cinema-glow-btn:active,
+.cinema-glow-btn.active-pressed {
+  background: linear-gradient(135deg, #241215 0%, #38151b 50%, #44171e 100%) !important;
+  transform: scale(0.98);
+}
+
+/* Profile Edit Button: sharp rectangular corners (3px) on mobile (<768px), 10px on desktop (>=768px) */
+.profile-edit-btn {
+  border-radius: 3px !important;
+}
+.profile-edit-btn::after {
+  border-radius: 3px !important;
+}
+
+@media (min-width: 768px) {
+  .profile-edit-btn {
+    border-radius: 10px !important;
+  }
+  .profile-edit-btn::after {
+    border-radius: 10px !important;
+  }
+}
+
+/* ========================================================================= */
+/* Filter Pill & Blur Capsule Dropdown Styles (1:1 with Screenshot image)    */
+/* ========================================================================= */
+.cinema-filter-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(18, 18, 24, 0.75) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #FAFAFA;
+  border-radius: 9999px;
+  /* full capsule pill */
+  padding: 8px 10px;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px;
+  font-weight: 300 !important;
+  cursor: pointer;
+  user-select: none;
+  border: 1.5px solid #FAFAFA !important;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  width: 108px;
+  min-width: 108px;
+  max-width: 108px;
+  height: 40px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.cinema-filter-pill,
+.cinema-filter-pill span,
+.cinema-capsule-header,
+.cinema-capsule-header span,
+.cinema-filter-capsule button,
+.cinema-filter-capsule span,
+.cinema-capsule-item {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300 !important;
+}
+
+.cinema-filter-pill:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: #FAFAFA !important;
+  color: #FFFFFF;
+}
+
+.cinema-filter-pill.filter-active {
+  border-color: #FF3040 !important;
+  background: rgba(255, 48, 64, 0.15) !important;
+  color: #FFFFFF;
+  box-shadow: 0 0 12px rgba(255, 48, 64, 0.35);
+}
+
+.cinema-filter-pill.filter-active:hover {
+  background: rgba(255, 48, 64, 0.25) !important;
+}
+
+/* Open Capsule Menu Container (Translucent Frosted Blur Glass matching screenshot, fixed w108 h40) */
+.cinema-filter-capsule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 108px;
+  min-width: 108px;
+  max-width: 108px;
+  box-sizing: border-box;
+  background: rgba(16, 16, 22, 0.94) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(105%) !important;
+  backdrop-filter: blur(24px) saturate(180%) brightness(105%) !important;
+  border-radius: 24px;
+  z-index: 100;
+  padding: 0 0 18px 0;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 48, 64, 0.25), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+  animation: capsuleExpandDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: none !important;
+}
+
+@keyframes capsuleExpandDown {
+  0% {
+    clip-path: inset(0 -30px calc(100% - 40px) -30px round 24px);
+  }
+
+  100% {
+    clip-path: inset(0 -30px -30px -30px round 24px);
+  }
+}
+
+@keyframes capsuleExpandDownMobile {
+  0% {
+    clip-path: inset(0 -15px calc(100% - 22px) -15px round 12px);
+  }
+
+  100% {
+    clip-path: inset(0 -15px -15px -15px round 12px);
+  }
+}
+
+/* Single Continuous Dual-Gradient Border around the entire open capsule */
+.cinema-filter-capsule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 28%, #FF4D5C 62%, #D41424 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 20;
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55)) drop-shadow(0 0 7px rgba(255, 48, 64, 0.8));
+}
+
+/* Capsule Header Button inside the opened capsule (Exact 1:1 match with closed pill dimensions) */
+.cinema-capsule-header {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #FAFAFA;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px;
+  font-weight: 300 !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  z-index: 25;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.cinema-capsule-header:hover {
+  color: #FFFFFF;
+}
+
+/* Curved dual-gradient arc divider mirroring the bottom half of the pill button */
+.cinema-capsule-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 40px;
+  border-radius: 24px;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 28%, #FF4D5C 62%, #D41424 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(18px 0 0 0);
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 5px rgba(255, 48, 64, 0.6));
+}
+
+/* Capsule List & Items */
+.cinema-capsule-list {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+  max-height: 420px;
+  overflow-y: auto;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  animation: capsuleListFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes capsuleListFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cinema-capsule-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.cinema-capsule-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cinema-capsule-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+}
+
+.cinema-capsule-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 48, 64, 0.6);
+}
+
+.cinema-capsule-item {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+  text-align: center;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px;
+  font-weight: 300 !important;
+  color: #FAFAFA;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease-in-out;
+  line-height: 1.35;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cinema-capsule-item:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.75);
+}
+
+.cinema-capsule-item.item-active {
+  color: #FF3040 !important;
+  font-weight: 600 !important;
+  text-shadow: 0 0 10px rgba(255, 48, 64, 0.8);
+}
+
+/* Compact Video Player filters matching the genres page aesthetic with tight, elegant dimensions */
+.player-filter-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: rgba(18, 18, 24, 0.75) !important;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  color: #FAFAFA;
+  border-radius: 9999px;
+  padding: 6px 12px;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px;
+  font-weight: 400 !important;
+  cursor: pointer;
+  user-select: none;
+  border: 1.5px solid #FAFAFA !important;
+  transition: all 0.2s ease;
+  width: auto;
+  min-width: 76px;
+  max-width: 130px;
+  height: 34px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.player-filter-pill:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: #FAFAFA !important;
+  color: #FFFFFF;
+}
+
+.player-filter-capsule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-width: 88px;
+  box-sizing: border-box;
+  background: rgba(16, 16, 22, 0.94) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(105%) !important;
+  backdrop-filter: blur(24px) saturate(180%) brightness(105%) !important;
+  border-radius: 18px;
+  z-index: 100;
+  padding: 0 0 12px 0;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.95), 0 0 20px rgba(255, 48, 64, 0.25), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+  animation: capsuleExpandDown 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.player-filter-capsule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 28%, #FF4D5C 62%, #D41424 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 20;
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55)) drop-shadow(0 0 6px rgba(255, 48, 64, 0.75));
+}
+
+.player-capsule-header {
+  position: relative;
+  width: 100%;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #FAFAFA;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px;
+  font-weight: 400 !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  z-index: 25;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.player-capsule-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 34px;
+  border-radius: 18px;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 28%, #FF4D5C 62%, #D41424 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(16px 0 0 0);
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 4px rgba(255, 48, 64, 0.6));
+}
+
+.player-capsule-item {
+  display: block;
+  width: 100%;
+  padding: 5px 8px;
+  text-align: center;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12.5px;
+  font-weight: 400 !important;
+  color: #FAFAFA;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease-in-out;
+  line-height: 1.3;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.player-capsule-item:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.75);
+}
+
+.player-capsule-item.item-active {
+  color: #FF3040 !important;
+  font-weight: 600 !important;
+  text-shadow: 0 0 10px rgba(255, 48, 64, 0.8);
+}
+
+/* Multi-engine guarantee to prevent CSS deduplication */
+@supports (-webkit-backdrop-filter: none) {
+  .cinema-filter-capsule {
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(105%) !important;
+    backdrop-filter: blur(24px) saturate(180%) brightness(105%) !important;
+  }
+}
+
+@supports (backdrop-filter: none) {
+  .cinema-filter-capsule {
+    backdrop-filter: blur(24px) saturate(180%) brightness(105%) !important;
+  }
+}
+
+/* Journey CTA Button Styling */
+.journey-cta-btn {
+  background: linear-gradient(180deg, #FF4D5C 0%, #D72835 100%) !important;
+}
+
+.journey-cta-btn:active {
+  background: #9B1C26 !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 12px rgba(155, 28, 38, 0.4) !important;
+}
+
+/* ========================================================================= */
+/* Profile Navigation Tabs (Clean gradient with fully transparent right side & no outer glow) */
+/* ========================================================================= */
+/* Profile Navigation Tabs (Clean gradient with fully transparent right side & no outer glow) */
+/* ========================================================================= */
+.profile-nav-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #D4D4D8;
+  border-radius: 14px;
+  background: transparent;
+  box-shadow: none !important;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+.profile-nav-tab:hover {
+  color: #FFFFFF;
+  background: linear-gradient(90deg, rgba(247, 31, 58, 0.45) 0%, rgba(247, 31, 58, 0.15) 50%, rgba(247, 31, 58, 0) 100%) !important;
+  box-shadow: none !important;
+  transform: none;
+}
+
+.profile-nav-tab.tab-active,
+.profile-nav-tab:active {
+  color: #FFFFFF !important;
+  font-weight: 600;
+  background: linear-gradient(90deg, #F71F3A 0%, rgba(247, 31, 58, 0.5) 45%, rgba(247, 31, 58, 0) 100%) !important;
+  box-shadow: none !important;
+  transform: none;
+}
+
+/* ========================================================================= */
+/* Sidebar Navigation Tabs (Exact same gradient with transparent right side & no outer glow) */
+/* ========================================================================= */
+.sidebar-nav-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 38px;
+  padding-left: 12px;
+  padding-right: 8px;
+  border-radius: 6px;
+  background: transparent !important;
+  color: #A3A3A3;
+  box-shadow: none !important;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease-in-out;
+  border: none !important;
+  outline: none !important;
+}
+
+@media (min-width: 768px) {
+  .sidebar-nav-tab {
+    height: 38px !important;
+    padding-left: 50px !important;
+  }
+}
+
+@media (min-height: 1050px) and (min-width: 768px) {
+  .sidebar-nav-tab {
+    height: 42px !important;
+  }
+}
+
+.sidebar-nav-tab:hover {
+  color: #FFFFFF !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transform: none;
+}
+
+.sidebar-nav-tab.tab-active,
+.sidebar-nav-tab:active {
+  color: #FFFFFF !important;
+  font-weight: 600;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transform: none;
+}
+
+/* Sidebar Tab highlight background: begins at the icon and softly fades out */
+.sidebar-tab-hover-bg {
+  background: linear-gradient(90deg, #F71F3A 0%, rgba(247, 31, 58, 0.45) 45%, rgba(247, 31, 58, 0.12) 70%, transparent 90%) no-repeat !important;
+  border-radius: 6px !important;
+}
+
+.sidebar-tab-active-bg {
+  background: linear-gradient(90deg, #F71F3A 0%, rgba(247, 31, 58, 0.45) 40%, rgba(247, 31, 58, 0.08) 65%, transparent 85%) no-repeat !important;
+  border-radius: 6px !important;
+}
+
+
+
+
+
+/* Приховування смуги прокрутки для вікна/body у всіх браузерах */
+html,
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Універсальні класи для контейнерів (Chrome, Safari, Firefox, Edge) */
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.scrollbar-none,
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.layer-blur {
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+}
+
+/* Variant with no background fill */
+.cinema-glow-btn.no-bg,
+.cinema-glow-btn.cinema-glow-btn-nobg {
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+.cinema-glow-btn.no-bg:hover,
+.cinema-glow-btn.cinema-glow-btn-nobg:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.cinema-glow-btn.no-bg:active,
+.cinema-glow-btn.cinema-glow-btn-nobg:active {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Input & Social icons pure #FAFAFA white filter */
+.icon-fafafa {
+  filter: brightness(0) invert(1) !important;
+  -webkit-filter: brightness(0) invert(1) !important;
+}
+
+/* Poster Hover Notification Border Effect:
+   Gradient from #FFFFFF at top to #FF4D5C at bottom, 1px thickness (Desktop only!)
+*/
+.poster-hover-notif-border {
+  position: relative;
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .poster-hover-notif-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 35%, #FF4D5C 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    z-index: 35;
+  }
+
+  .poster-hover-notif-border:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Explicitly disable poster hover border, glow outlines, and sticky tap on mobile */
+@media (max-width: 767px), (hover: none) {
+  .poster-hover-notif-border::before {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+  }
+
+  .poster-hover-notif-border,
+  .poster-hover-notif-border:hover,
+  .poster-hover-notif-border:active,
+  .poster-hover-notif-border:focus,
+  .poster-hover-notif-border:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .poster-hover-notif-border:hover img,
+  .poster-hover-notif-border:active img,
+  .group\/card:hover img,
+  .group\/card:active img,
+  .group:hover img,
+  .group:active img {
+    transform: none !important;
+  }
+}
+
+/* Thin sleek scrollbar for compact notification dropdown */
+.notif-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+.notif-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.notif-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+}
+.notif-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 48, 64, 0.6);
+}
+
+/* ========================================================================= */
+/* Mobile Specific Adjustments (max-width: 767px)                            */
+/* ========================================================================= */
+@media (max-width: 767px) {
+  /* Remove dual-layer blur on mobile for Header & Footer */
+  .cinema-header::before,
+  .cinema-header::after,
+  .cinema-footer::before,
+  .cinema-footer::after {
+    display: none !important;
+  }
+
+  .cinema-header,
+  .cinema-footer {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Filter Pills exactly w80px h22px on Mobile */
+  .cinema-filter-pill {
+    width: 80px !important;
+    min-width: 80px !important;
+    max-width: 80px !important;
+    height: 22px !important;
+    padding: 2px 4px !important;
+    font-size: 8.5px !important;
+    gap: 3px !important;
+    border-width: 1px !important;
+  }
+
+  .cinema-filter-pill span {
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .cinema-filter-pill svg {
+    width: 10px !important;
+    height: 10px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Filter Dropdown Capsule on Mobile */
+  .cinema-filter-capsule {
+    width: 80px !important;
+    min-width: 80px !important;
+    max-width: 80px !important;
+    border-radius: 12px !important;
+    padding: 0 0 8px 0 !important;
+    animation: capsuleExpandDownMobile 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .cinema-capsule-header {
+    height: 22px !important;
+    padding: 2px 4px !important;
+    font-size: 8.5px !important;
+    gap: 3px !important;
+  }
+
+  .cinema-capsule-header span {
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .cinema-capsule-header svg {
+    width: 10px !important;
+    height: 10px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .cinema-capsule-header::after {
+    height: 22px !important;
+    border-radius: 12px !important;
+    clip-path: inset(11px 0 0 0) !important;
+  }
+
+  .cinema-capsule-item {
+    font-size: 8.5px !important;
+    padding: 3px 5px !important;
+  }
+
+  /* Watch Party Mobile Filter Pills - exactly matching Screenshot 1/2/3 */
+  .watchparty-filter-pill {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 34px !important;
+    border-radius: 9999px !important;
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+    gap: 4px !important;
+    border: 1px solid #FAFAFA !important;
+    background: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .watchparty-filter-pill span {
+    font-size: 12px !important;
+    font-weight: 300 !important;
+  }
+
+  .watchparty-filter-pill svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .watchparty-capsule {
+    width: 100% !important;
+    min-width: 78px !important;
+    border-radius: 16px !important;
+  }
+
+  .watchparty-capsule .cinema-capsule-header {
+    height: 34px !important;
+    font-size: 12px !important;
+    padding: 4px 6px !important;
+  }
+
+  .watchparty-capsule .cinema-capsule-header span {
+    font-size: 12px !important;
+  }
+
+  .watchparty-capsule .cinema-capsule-item {
+    font-size: 11px !important;
+    padding: 5px 6px !important;
+  }
+}

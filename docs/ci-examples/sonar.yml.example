@@ -1,0 +1,57 @@
+# REFERENCE ONLY: not an active GitHub Actions workflow.
+# Configure your own hosts, runner and registry before use.
+name: SonarQube
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sonarqube:
+    name: Analyze
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+        continue-on-error: true
+
+      - name: Ensure Node.js runtime and clean stale bridge
+        run: |
+          pkill -f 'bridge' 2>/dev/null || true
+          pkill -f 'node-runtime' 2>/dev/null || true
+          rm -rf /home/dev/.sonar/js/node-runtime 2>/dev/null || true
+          rm -rf ~/.sonar/js/node-runtime 2>/dev/null || true
+
+          if ! command -v node >/dev/null 2>&1; then
+            for loc in /usr/bin /usr/local/bin /snap/bin $HOME/.nvm/versions/node/*/bin; do
+              if [ -x "$loc/node" ]; then
+                echo "$loc" >> $GITHUB_PATH
+                export PATH="$loc:$PATH"
+                break
+              fi
+            done
+          fi
+
+          echo "Using Node from: $(which node || echo 'NONE')"
+          node -v || echo "Node version check failed"
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        with:
+          args: >
+            -Dsonar.scanner.skipNodeProvisioning=true
+            -Dsonar.javascript.node.maxspace=1024
+            -Dsonar.nodejs.executable=node
+            -Dhttp.nonProxyHosts="localhost|127.*|[::1]"
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_SCANNER_OPTS: "-Dsonar.scanner.skipNodeProvisioning=true -Dhttp.nonProxyHosts=localhost|127.*|[::1]"
+          NODE_OPTIONS: "--max-old-space-size=1024"
+          NO_PROXY: "localhost,127.0.0.1,::1"
+          no_proxy: "localhost,127.0.0.1,::1"

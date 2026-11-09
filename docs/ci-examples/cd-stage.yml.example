@@ -1,0 +1,26 @@
+# REFERENCE ONLY: not an active GitHub Actions workflow.
+# Configure your own hosts, runner and registry before use.
+name: CD Stage
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Frontend CI", "Backend CI"]
+    types: [completed]
+    branches: [dev]
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: self-hosted
+    steps:
+      - name: Deploy to Stage
+        run: |
+          ssh -p 22 -o StrictHostKeyChecking=yes -i ~/.ssh/id_ed25519 deploy@example.invalid '
+            set -e
+            cd /opt/cinema-nova
+            git pull origin dev || true
+            docker compose pull
+            docker compose up -d --force-recreate
+            docker compose ps
+          '

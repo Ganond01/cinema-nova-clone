@@ -1,0 +1,6 @@
+{
+  "name": "CINEMA NOVA",
+  "description": "Сучасна веб-платформа для онлайн-перегляду фільмів та серіалів нового покоління з персоналізованими рекомендаціями, Watch Party та преміальним дизайном.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

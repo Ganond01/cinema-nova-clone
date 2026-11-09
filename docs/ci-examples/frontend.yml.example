@@ -1,0 +1,42 @@
+# REFERENCE ONLY: not an active GitHub Actions workflow.
+# Configure your own hosts, runner and registry before use.
+name: Frontend CI
+
+on:
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: ghcr.io/YOUR_ACCOUNT/cinema-frontend
+
+jobs:
+  build:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build image
+        run: |
+          docker build -t $IMAGE_NAME:${{ github.ref_name }} -t $IMAGE_NAME:${{ github.sha }} -f Dockerfile.frontend .
+
+      - name: Push image
+        run: |
+          docker push $IMAGE_NAME:${{ github.ref_name }}
+          docker push $IMAGE_NAME:${{ github.sha }}
+
+      - name: Smoke test
+        run: |
+          docker rm -f cinema-frontend-ci 2>/dev/null || true
+          docker run -d --name cinema-frontend-ci -p 8088:80 $IMAGE_NAME:${{ github.ref_name }}
+          sleep 2
+          curl -sf -o /dev/null -w "%{http_code}\n" http://127.0.0.1:8088
+          docker rm -f cinema-frontend-ci
